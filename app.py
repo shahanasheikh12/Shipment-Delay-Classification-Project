@@ -1,9 +1,7 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
-import matplotlib.pyplot as plt
 
 # Load model
 
@@ -18,84 +16,40 @@ st.write("Predict whether shipment will arrive on time or be delayed.")
 
 # User Inputs
 
-warehouse_block = st.selectbox(
-    "Warehouse Block",
-    [0,1,2,3,4]
+origin_warehouse = st.number_input(
+    "Origin Warehouse",
+    min_value=0,
+    value=1
 )
 
-mode_of_shipment = st.selectbox(
-    "Mode of Shipment",
-    [0,1,2]
+destination_store = st.number_input(
+    "Destination Store",
+    min_value=0,
+    value=1
 )
 
-customer_care_calls = st.slider(
-    "Customer Care Calls",
-    0,
-    10,
-    3
+product = st.number_input(
+    "Product",
+    min_value=0,
+    value=1
 )
 
-customer_rating = st.slider(
-    "Customer Rating",
-    1,
-    5,
-    3
+driver_identifier = st.number_input(
+    "Driver Identifier",
+    min_value=0,
+    value=1
 )
 
-cost_of_product = st.number_input(
-    "Cost of Product",
-    0,
-    1000,
-    200
-)
-
-prior_purchases = st.slider(
-    "Prior Purchases",
-    0,
-    20,
-    5
-)
-
-product_importance = st.selectbox(
-    "Product Importance",
-    [0,1,2]
-)
-
-gender = st.selectbox(
-    "Gender",
-    [0,1]
-)
-
-discount_offered = st.slider(
-    "Discount Offered",
-    0,
-    100,
-    10
-)
-
-weight_in_gms = st.number_input(
-    "Weight in Grams",
-    100,
-    10000,
-    3000
-)
-
-# Prediction Button
+# Prediction
 
 if st.button("Predict Shipment Status"):
 
-    input_data = np.array([[
-        warehouse_block,
-        mode_of_shipment,
-        customer_care_calls,
-        customer_rating,
-        cost_of_product,
-        prior_purchases,
-        product_importance,
-        gender,
-        discount_offered,
-        weight_in_gms
-    ]])
+    input_data = pd.DataFrame([{
+        'origin_warehouse': origin_warehouse,
+        'destination_store': destination_store,
+        'product': product,
+        'driver_identifier': driver_identifier
+    }])
 
     prediction = model.predict(input_data)
 
